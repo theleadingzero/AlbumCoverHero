@@ -1,4 +1,5 @@
 import SimpleOpenNI.*;
+import processing.video.*;
 
 AlbumCover a;
 String api_key = "5eb8478b6d02dcb40022b7b32ade5055";
@@ -7,6 +8,8 @@ SimpleOpenNI  context;
 
 int offset;
 
+Movie myMovie;
+
 void setup()
 {
   // instantiate a new context
@@ -14,24 +17,28 @@ void setup()
  
   // enable depth image generation 
   context.enableRGB();
+  context.enableDepth();
  
   // enable scene analyser
   context.enableScene();
  
   // create a window the size of the scene
   size(context.sceneWidth(), context.sceneHeight()); 
-  
+  // align depth data to image data
+  context.alternativeViewPointDepthToImage();
   //calculateOffset();
   //println(offset);
-  offset = 15;
+  offset = 0;
   
   // initialise class with artist name and api_key
-  a = new AlbumCover("The Beatles",api_key);
+  //a = new AlbumCover("The Beatles",api_key);
   
-  a.setImageDimensions(width,height);
+  //a.setImageDimensions(width,height);
   
-  a.loadAlbum();
+  //a.loadAlbum();
   
+  myMovie = new Movie(this, "whitesnake.mov");
+  myMovie.play();
  
 }
  
@@ -45,8 +52,9 @@ void draw()
  
 // background(100, 150, 27);
   // draw scene Image
-  image(a.getCover(),0,0); 
- 
+  //image(a.getCover(),0,0); 
+ image(myMovie, 0, 0);
+   
   // gives you a label map, 0 = no person, 0+n = person n
    int[] map = context.sceneMap();
  
@@ -111,4 +119,8 @@ void keyPressed()
   }
    //background(0);
    //image(a.getCover(),0,0);
+}
+
+void movieEvent(Movie m) {
+  m.read();
 }
