@@ -1,7 +1,9 @@
 import SimpleOpenNI.*;
  
 SimpleOpenNI  context;
- 
+
+float offset;
+
 void setup()
 {
   // instantiate a new context
@@ -15,6 +17,9 @@ void setup()
  
   // create a window the size of the scene
   size(context.sceneWidth(), context.sceneHeight()); 
+  
+  calculateOffset();
+  println(offset);
 }
  
 void draw()
@@ -51,4 +56,21 @@ void draw()
    //if (foundPerson)
      //println("Found Person");
  
+}
+
+void calculateOffset() {
+  PVector offsetVectorW = new PVector();
+  PVector offsetVectorP = new PVector();
+  
+  offsetVectorW.x = 800;
+  offsetVectorW.y = 50;
+  offsetVectorW.z = 80;
+  
+  context.convertRealWorldToProjective(offsetVectorW, offsetVectorP); 
+  
+  offset = offsetVectorP.x;
+  
+  println(offsetVectorP.x);
+  println(offsetVectorP.y);
+  println(offsetVectorP.z);
 }
